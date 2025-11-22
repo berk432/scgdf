@@ -27,8 +27,6 @@ Bu projedeki tüm kodlar, tasarımlar ve içerikler geliştiricilere aittir.
 - Kodun GitHub commit geçmişi ve yükleme zaman damgaları, projenin size ait olduğunun kanıtıdır.  
 - Bu içeriğin herhangi bir yetkisiz kullanımında yasal haklar saklıdır.
 
-> **Not:** Projenin özgünlüğü ve sahipliği GitHub zaman damgaları ve SHA256 gibi dijital imzalar ile ispatlanabilir.
-
 ---
 
 ## 🎯 Amaç
