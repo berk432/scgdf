@@ -39,16 +39,16 @@ main {
 }
 .menu-card:hover { transform: scale(1.05); background: rgba(0,0,0,0.6); }
 
-#shop-screen, #profile-screen, #deck-screen, #battle-screen, #badge-screen, #stats-screen, #leaderboard-screen, #season-screen, #admin-screen {
+#shop-screen, #profile-screen, #deck-screen, #battle-screen, #badge-screen, #stats-screen, #leaderboard-screen, #season-screen, #admin-screen, #emoji-selector-screen {
     display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95);
     color:white; flex-direction:column; align-items:center; justify-content:flex-start; padding:20px; overflow:auto;
     z-index: 1000;
 }
-#shop-screen h2, #profile-screen h2, #deck-screen h2, #battle-screen h2, #badge-screen h2, #stats-screen h2, #leaderboard-screen h2, #season-screen h2, #admin-screen h2 { color:#ffcc00; margin-bottom:20px; }
-#shop-screen button, #profile-screen button, #deck-screen button, #battle-screen button, #badge-screen button, #stats-screen button, #leaderboard-screen button, #season-screen button, #admin-screen button {
+#shop-screen h2, #profile-screen h2, #deck-screen h2, #battle-screen h2, #badge-screen h2, #stats-screen h2, #leaderboard-screen h2, #season-screen h2, #admin-screen h2, #emoji-selector-screen h2 { color:#ffcc00; margin-bottom:20px; }
+#shop-screen button, #profile-screen button, #deck-screen button, #battle-screen button, #badge-screen button, #stats-screen button, #leaderboard-screen button, #season-screen button, #admin-screen button, #emoji-selector-screen button {
     margin:10px; padding:10px 20px; border:none; border-radius:5px; background:#444; color:white; cursor:pointer; transition:0.3s;
 }
-#shop-screen button:hover, #profile-screen button:hover, #deck-screen button:hover, #battle-screen button:hover, #badge-screen button:hover, #stats-screen button:hover, #leaderboard-screen button:hover, #season-screen button:hover, #admin-screen button:hover {
+#shop-screen button:hover, #profile-screen button:hover, #deck-screen button:hover, #battle-screen button:hover, #badge-screen button:hover, #stats-screen button:hover, #leaderboard-screen button:hover, #season-screen button:hover, #admin-screen button:hover, #emoji-selector-screen button:hover {
     background:#666; transform:scale(1.05);
 }
 #creator-input { margin:10px; padding:5px; border-radius:5px; border:none; width:200px; }
@@ -471,6 +471,105 @@ main {
 .admin-btn:hover {
     background: #ff6666 !important;
 }
+
+/* Emoji seçim ekranı için yeni stiller */
+#emoji-selector-screen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+    color: white;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    overflow: auto;
+    z-index: 1000;
+}
+
+.selected-emojis-preview {
+    background: rgba(255,255,255,0.1);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 80%;
+    max-width: 800px;
+    text-align: center;
+}
+
+.emoji-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.emoji-item {
+    background: rgba(255,255,255,0.1);
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 2em;
+    cursor: pointer;
+    transition: 0.3s;
+    min-width: 60px;
+    text-align: center;
+}
+
+.emoji-item:hover {
+    background: rgba(255,255,255,0.2);
+    transform: scale(1.1);
+}
+
+.emoji-item.selected {
+    background: rgba(255,215,0,0.3);
+    border: 2px solid gold;
+}
+
+.emoji-collection {
+    background: rgba(255,255,255,0.1);
+    border-radius: 15px;
+    padding: 20px;
+    width: 80%;
+    max-width: 800px;
+    text-align: center;
+}
+
+.emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.emoji-grid-item {
+    background: rgba(255,255,255,0.1);
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
+}
+
+.emoji-grid-item:hover {
+    background: rgba(255,255,255,0.2);
+    transform: scale(1.1);
+}
+
+.emoji-grid-item.selected {
+    background: rgba(255,215,0,0.3);
+    border: 2px solid gold;
+}
+
+.emoji-info {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #ccc;
+}
 </style>
 </head>
 <body>
@@ -494,6 +593,7 @@ main {
     <button onclick="openBadgeScreen()">Rozetler</button>
     <button onclick="openLeaderboard()">Lider Tablosu</button>
     <button onclick="openSeasonScreen()">Sezon</button>
+    <button onclick="openEmojiSelector()">Emoji Seç</button>
     <button id="admin-btn" onclick="openAdminPanel()" style="display:none; background:red;">Admin Paneli</button>
 </nav>
 
@@ -506,6 +606,7 @@ main {
     <div class="menu-card" onclick="showStats()"><h3>İstatistikler</h3><p>Detaylı istatistiklerini gör!</p></div>
     <div class="menu-card" onclick="openLeaderboard()"><h3>Lider Tablosu</h3><p>En iyi oyuncuları gör!</p></div>
     <div class="menu-card" onclick="openSeasonScreen()"><h3>Sezon</h3><p>Sezon bilgilerini gör!</p></div>
+    <div class="menu-card" onclick="openEmojiSelector()"><h3>Emoji Seç</h3><p>Maçlarda kullanmak için 5 emoji seç!</p></div>
     <div class="menu-card" id="admin-menu-card" onclick="openAdminPanel()" style="display:none; border-color:red;"><h3>Admin Paneli</h3><p>Yönetici araçları</p></div>
 </main>
 
@@ -520,13 +621,34 @@ main {
         <div id="recent-matches"></div>
     </div>
     <div class="pc-feature-card">
-        <h3>Sezon Bilgisi</h3>
-        <div id="season-preview"></div>
+        <h3>Seçili Emojiler</h3>
+        <div id="selected-emojis-preview" class="emoji-list"></div>
     </div>
 </div>
 
 <!-- ESC tuşu bilgilendirmesi -->
 <div class="esc-info">Managed By cucu</div>
+
+<!-- EMOJİ SEÇİM EKRANI -->
+<div id="emoji-selector-screen">
+    <button class="close-btn" onclick="closeEmojiSelector()">X</button>
+    <h2>Emoji Seçici</h2>
+    <p>Maçlarda kullanmak için 5 emoji seçin:</p>
+    
+    <div class="selected-emojis-preview">
+        <h3>Seçili Emojileriniz</h3>
+        <div id="selected-emojis-list" class="emoji-list"></div>
+        <p class="emoji-info">Seçilen: <span id="selected-count">0</span>/5</p>
+        <button onclick="clearSelectedEmojis()">Seçimleri Temizle</button>
+    </div>
+    
+    <div class="emoji-collection">
+        <h3>Kullanılabilir Emojiler</h3>
+        <div id="emoji-collection-list" class="emoji-grid"></div>
+    </div>
+    
+    <button onclick="saveSelectedEmojis()" style="margin-top: 20px;">Emojileri Kaydet</button>
+</div>
 
 <!-- ADMIN PANELİ -->
 <div id="admin-screen">
@@ -683,14 +805,8 @@ main {
     <div class="battle-container">
         <div class="player-area">
             <h3>Sen</h3>
-            <div class="emoji-bar">
-                <button class="emoji-btn" onclick="sendEmoji('👋')">👋</button>
-                <button class="emoji-btn" onclick="sendEmoji('😄')">😄</button>
-                <button class="emoji-btn" onclick="sendEmoji('😡')">😡</button>
-                <button class="emoji-btn" onclick="sendEmoji('👑')">👑</button>
-                <button class="emoji-btn" onclick="sendEmoji('💀')">💀</button>
-                <button class="emoji-btn" onclick="sendEmoji('👍')">👍</button>
-                <button class="emoji-btn" onclick="sendEmoji('👎')">👎</button>
+            <div class="emoji-bar" id="player-emoji-bar">
+                <!-- Emojiler buraya dinamik olarak eklenecek -->
             </div>
             <div class="deck-preview" id="battle-deck-preview"></div>
         </div>
@@ -846,6 +962,17 @@ let seasonEndDate = localStorage.getItem('seasonEndDate') || calculateSeasonEndD
 let seasonHistory = JSON.parse(localStorage.getItem('seasonHistory')) || [];
 let leaderboardData = JSON.parse(localStorage.getItem('leaderboardData')) || null;
 
+// Emoji değişkenleri
+let selectedEmojis = JSON.parse(localStorage.getItem('selectedEmojis')) || ['😄', '👑', '💀', '👍', '👎'];
+let allAvailableEmojis = [
+    '😄', '😊', '😎', '😍', '🥳', '😢', '😡', '😱', '😴', '🤔',
+    '👑', '💀', '👻', '💩', '🤖', '👾', '🐉', '🦁', '🐸', '🦄',
+    '👍', '👎', '👊', '✌️', '🤘', '👌', '🤙', '🙏', '💪', '🦵',
+    '🔥', '💧', '⚡', '❄️', '🌪️', '🌈', '⭐', '🌟', '💫', '✨',
+    '⚽', '🏀', '🎯', '🎮', '🎲', '🎨', '🎵', '🎸', '🎺', '🥁',
+    '🚀', '🏆', '🎪', '🎭', '💯', '✅', '❌', '➡️', '⬅️', '🔄'
+];
+
 // KARTLAR
 const allCards = [
     {emoji:'⚔️', name:'Savaşçı', cost: 3, rarity: 'common'}, 
@@ -896,6 +1023,120 @@ const fakePlayerNames = [
 if(!badges.includes('starter')) {
     badges.push('starter');
     localStorage.setItem('badges', JSON.stringify(badges));
+}
+
+// EMOJİ FONKSİYONLARI
+function openEmojiSelector() {
+    document.getElementById('emoji-selector-screen').style.display = 'flex';
+    displaySelectedEmojis();
+    displayEmojiCollection();
+}
+
+function closeEmojiSelector() {
+    document.getElementById('emoji-selector-screen').style.display = 'none';
+}
+
+function displaySelectedEmojis() {
+    const container = document.getElementById('selected-emojis-list');
+    const countElement = document.getElementById('selected-count');
+    
+    container.innerHTML = '';
+    countElement.textContent = selectedEmojis.length;
+    
+    selectedEmojis.forEach((emoji, index) => {
+        const emojiElement = document.createElement('div');
+        emojiElement.className = 'emoji-item selected';
+        emojiElement.innerHTML = emoji;
+        emojiElement.onclick = () => removeEmoji(index);
+        container.appendChild(emojiElement);
+    });
+    
+    // Ana sayfadaki önizlemeyi güncelle
+    updateEmojiPreview();
+}
+
+function displayEmojiCollection() {
+    const container = document.getElementById('emoji-collection-list');
+    container.innerHTML = '';
+    
+    allAvailableEmojis.forEach(emoji => {
+        const isSelected = selectedEmojis.includes(emoji);
+        const emojiElement = document.createElement('div');
+        emojiElement.className = `emoji-grid-item ${isSelected ? 'selected' : ''}`;
+        emojiElement.innerHTML = emoji;
+        
+        if (!isSelected) {
+            emojiElement.onclick = () => addEmoji(emoji);
+        }
+        
+        container.appendChild(emojiElement);
+    });
+}
+
+function addEmoji(emoji) {
+    if (selectedEmojis.length >= 5) {
+        alert('Maksimum 5 emoji seçebilirsiniz!');
+        return;
+    }
+    
+    selectedEmojis.push(emoji);
+    displaySelectedEmojis();
+    displayEmojiCollection();
+}
+
+function removeEmoji(index) {
+    selectedEmojis.splice(index, 1);
+    displaySelectedEmojis();
+    displayEmojiCollection();
+}
+
+function clearSelectedEmojis() {
+    if (confirm('Tüm seçili emojileri temizlemek istediğinizden emin misiniz?')) {
+        selectedEmojis = [];
+        displaySelectedEmojis();
+        displayEmojiCollection();
+    }
+}
+
+function saveSelectedEmojis() {
+    if (selectedEmojis.length === 0) {
+        alert('En az 1 emoji seçmelisiniz!');
+        return;
+    }
+    
+    localStorage.setItem('selectedEmojis', JSON.stringify(selectedEmojis));
+    alert('Emojileriniz kaydedildi!');
+    closeEmojiSelector();
+}
+
+function updateEmojiPreview() {
+    const container = document.getElementById('selected-emojis-preview');
+    container.innerHTML = '';
+    
+    selectedEmojis.forEach(emoji => {
+        const emojiElement = document.createElement('div');
+        emojiElement.className = 'emoji-item';
+        emojiElement.innerHTML = emoji;
+        container.appendChild(emojiElement);
+    });
+    
+    // Savaş ekranındaki emoji çubuğunu güncelle
+    updateBattleEmojiBar();
+}
+
+function updateBattleEmojiBar() {
+    const container = document.getElementById('player-emoji-bar');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    selectedEmojis.forEach(emoji => {
+        const emojiButton = document.createElement('button');
+        emojiButton.className = 'emoji-btn';
+        emojiButton.innerHTML = emoji;
+        emojiButton.onclick = () => sendEmoji(emoji);
+        container.appendChild(emojiButton);
+    });
 }
 
 // ADMIN KONTROLÜ
@@ -1219,6 +1460,7 @@ function closeAllScreens() {
     closeLeaderboard();
     closeSeasonScreen();
     closeAdminPanel();
+    closeEmojiSelector();
 }
 
 function updateResources(){
@@ -1244,6 +1486,7 @@ function updateResources(){
     updateDeckPreview();
     updateRecentMatches();
     updateSeasonInfo();
+    updateEmojiPreview();
 }
 
 // MAĞAZA FONKSİYONLARI
@@ -1518,6 +1761,9 @@ function startBattle(){
     battleTimer = 5;
     document.getElementById('battle-timer').textContent = battleTimer;
     document.getElementById('battle-log').textContent = "Maç başladı! Rakibinize emoji gönderebilirsiniz.";
+    
+    // Emoji çubuğunu güncelle
+    updateBattleEmojiBar();
     
     const opponentDeck = [...allCards].sort(() => 0.5 - Math.random()).slice(0, 8);
     const opponentDeckPreview = document.getElementById('opponent-deck-preview');
@@ -2065,11 +2311,10 @@ window.onload = function() {
     checkSeasonEnd();
     updateResources();
     checkAdmin();
+    updateEmojiPreview();
 };
 
 updateResources();
 </script>
 </body>
-</html>	
-<!-- Created by berk432, 22.11.2025- my github link:https://github.com/berk432 -->
-
+</html>
